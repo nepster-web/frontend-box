@@ -1,0 +1,17 @@
+{
+  "name": "frontend-box",
+  "version": "0.0.1",
+  "homepage": "https://github.com/nepster-web/frontend-box",
+  "authors": [
+    "Nepster <nepsterxxx@mail.ru>"
+  ],
+  "description": "Заготовка для frontend приложения",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "normalize.css": "*",
+    "jquery": "*"
+  }
+}

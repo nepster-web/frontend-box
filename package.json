@@ -1,0 +1,26 @@
+{
+  "name": "frontend-box",
+  "version": "0.0.1",
+  "description": "Заготовка для frontend приложения",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nepster-web/frontend-box"
+  },
+  "dependencies": {
+    "gulp": "*",
+    "gulp-less": "*",
+    "gulp-watch": "*",
+    "gulp-preprocess": "*",
+    "gulp-copy": "*",
+    "gulp-cssmin": "*",
+    "gulp-autoprefixer": "*",
+    "gulp-image": "*",
+    "gulp-uglify": "*",
+    "gulp-env": "*",
+    "gulp-rename": "*",
+    "gulp-ignore": "*"
+  },
+  "license": "MIT"
+}
+
+
