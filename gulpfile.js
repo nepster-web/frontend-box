@@ -13,6 +13,8 @@ var gulp = require('gulp'),
     copy = require('gulp-copy'),
     concat = require('gulp-concat');
 
+var gulpsync = require('gulp-sync')(gulp);
+
 
 var params = {
     build: {
@@ -72,13 +74,13 @@ var params = {
 gulp.task('html-dev:build', function () {
     gulp.src(params.src.html)
         .pipe(preprocess({context: params.build.dev.settings}))
-        .pipe(gulp.dest(params.build.dev.html))
+        .pipe(gulp.dest(params.build.dev.html));
 });
 
 gulp.task('html-prod:build', function () {
     gulp.src(params.src.html)
         .pipe(preprocess({context: params.build.prod.settings}))
-        .pipe(gulp.dest(params.build.prod.html))
+        .pipe(gulp.dest(params.build.prod.html));
 });
 
 //-------------
@@ -94,7 +96,7 @@ gulp.task('styles-dev:build', function () {
             cascade: false
         }))
         .pipe(rename("styles.css"))
-        .pipe(gulp.dest(params.build.dev.css))
+        .pipe(gulp.dest(params.build.dev.css));
 });
 
 gulp.task('styles-prod:build', function () {
@@ -115,7 +117,7 @@ gulp.task('styles-prod:build', function () {
 
 gulp.task('js-dev:build', function () {
     gulp.src(params.src.js)
-        .pipe(gulp.dest(params.build.dev.js))
+        .pipe(gulp.dest(params.build.dev.js));
 });
 
 gulp.task('js-prod:build', function () {
@@ -210,4 +212,10 @@ gulp.task('prod', ['dev'], function() {
 });
 
 
-gulp.task('default', ['dev', 'prod', 'images']);
+//gulp.task('default', ['dev', 'prod', 'images']);
+
+
+gulp.task('default', gulpsync.sync([
+    'dev',
+    'prod'
+]));
