@@ -215,7 +215,14 @@ gulp.task('prod', ['dev'], function() {
 //gulp.task('default', ['dev', 'prod', 'images']);
 
 
-gulp.task('default', gulpsync.sync([
+/*gulp.task('default', gulpsync.sync([
     'dev',
     'prod'
-]));
+]));*/
+
+var runSequence = require('run-sequence').use(gulp);
+
+
+gulp.task('default', function() {
+    runSequence('dev', 'prod');
+});
