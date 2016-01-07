@@ -12,13 +12,14 @@
     "gulp-watch": "*",
     "gulp-preprocess": "*",
     "gulp-copy": "*",
-    "gulp-cssmin": "*",
     "gulp-autoprefixer": "*",
     "gulp-image": "*",
     "gulp-uglify": "*",
     "gulp-env": "*",
     "gulp-rename": "*",
-    "gulp-ignore": "*"
+    "gulp-ignore": "*",
+    "gulp-minify-css": "*",
+    "gulp-concat": "*"
   },
   "license": "MIT"
 }

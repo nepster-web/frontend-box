@@ -1,9 +1,36 @@
-"Frontend-Box" - Заготовка для frontend приложения
-==================================================
+Заготовка для frontend приложения
+=================================
 
----
+Использование сборщика [Gulp](http://gulpjs.com).
+Использование препроцессора [LESS](http://lesscss.org).
+Использование менеджера пакетов [Bower](http://bower.io/).
 
 
+Установка
+---------
+
+**npm install**
+**bower update**
+
+
+Запуск
+------
+
+**gulp**: запускает полную сборку
+
+**gulp dev**: запускает сборку dev версии
+
+**gulp prod**: запускает сборку prod версии
+
+**gulp images**: запускает оптимизацию изображений
+
+**gulp watch**: наблюдение за изменением файлов в dev версии
+
+
+Окружения
+---------
+**dev** - окружение для быстрой сборки. Не использует оптимизацию изображений, минификацию и сжатие файлов.
+**prod** - окружение для продакшина. Использует всю оптимизацию по максимуму.
 
 
 Описание плагинов
@@ -17,7 +44,9 @@
 
 [gulp-copy](https://www.npmjs.com/package/gulp-copy): копирование файлов
 
-[gulp-cssmin](https://www.npmjs.com/package/gulp-cssmin): минификация css файлов
+[gulp-minify-css](https://www.npmjs.com/package/gulp-minify-css): минификация css файлов
+
+[gulp-concat](https://www.npmjs.com/package/gulp-concat): Слияние файлов (например css и js)
 
 [gulp-autoprefixer](https://www.npmjs.com/package/gulp-autoprefixer): автоматически добавляет вендорные префиксы к CSS свойствам
 

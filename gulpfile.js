@@ -6,11 +6,12 @@ var gulp = require('gulp'),
     preprocess = require('gulp-preprocess'),
     less = require('gulp-less'),
     env = require('gulp-env'),
-    cssmin = require('gulp-cssmin'),
+    minifyCSS = require('gulp-minify-css'),
     rename = require('gulp-rename'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
-    copy = require('gulp-copy');
+    copy = require('gulp-copy'),
+    concat = require('gulp-concat');
 
 
 var params = {
@@ -20,6 +21,10 @@ var params = {
             js: 'build/dev/js/',
             css: 'build/dev/css/',
             img: 'build/dev/img/',
+            copy: {
+                'bower_components/normalize.css/normalize.css' : 'build/dev/css',
+                'bower_components/jquery/dist/jquery.js' : 'build/dev/js'
+            },
             settings: {
                 NODE_ENV: 'dev'
                 // preprocess settings
@@ -30,9 +35,18 @@ var params = {
             js: 'build/prod/js/',
             css: 'build/prod/css/',
             img: 'build/prod/img/',
+            copy: {
+                'bower_components/jquery/dist/jquery.min.js' : 'build/prod/js'
+            },
             settings: {
                 NODE_ENV: 'prod'
                 // preprocess settings
+            },
+            joinCss: {
+                'build/dev/css/*.css': {'build/prod/css/' : 'styles.min.css'}
+            },
+            joinJs: {
+                'build/dev/js/app.js': {'build/prod/js/' : 'app.min.js'}
             }
         }
     },
@@ -40,15 +54,17 @@ var params = {
         html: 'src/*.html',
         js: 'src/js/app.js',
         style: 'src/less/build.less',
-        img: 'src/img/**/*.*'
+        img: 'src/img/**/*.+(jpg|jpeg|gif|png|svg|ico)'
     },
     watch: {
         html: 'src/**/*.html',
         js: 'src/js/**/*.js',
-        style: 'src/style/**/*.less',
-        img: 'src/img/**/*.*'
+        style: 'src/less/**/*.less',
+        img: 'src/img/**/*.+(jpg|jpeg|gif|png|svg|ico)'
     }
 };
+
+//-------------
 
 
 // Сборка html файлов
@@ -82,15 +98,14 @@ gulp.task('styles-dev:build', function () {
 });
 
 gulp.task('styles-prod:build', function () {
-    gulp.src(params.src.style)
-        .pipe(less())
-        .pipe(autoprefixer({
-            browsers: ['last 55 versions'],
-            cascade: false
-        }))
-        .pipe(cssmin())
-        .pipe(rename("styles.min.css"))
-        .pipe(gulp.dest(params.build.prod.css))
+    for (var p in params.build.prod.joinCss) {
+        for (var _p in params.build.prod.joinCss[p]) {
+            gulp.src(p)
+                .pipe(minifyCSS())
+                .pipe(concat(params.build.prod.joinCss[p][_p]))
+                .pipe(gulp.dest(_p));
+        }
+    }
 });
 
 //-------------
@@ -104,15 +119,42 @@ gulp.task('js-dev:build', function () {
 });
 
 gulp.task('js-prod:build', function () {
-    gulp.src(params.src.js)
-        .pipe(uglify())
-        .pipe(gulp.dest(params.build.prod.js))
+    for (var p in params.build.prod.joinJs) {
+        for (var _p in params.build.prod.joinJs[p]) {
+            gulp.src(p)
+                .pipe(uglify())
+                .pipe(concat(params.build.prod.joinJs[p][_p]))
+                .pipe(gulp.dest(_p));
+        }
+    }
+});
+
+//-------------
+
+
+// Копирование файлов
+
+gulp.task('copy-dev:build', function () {
+    for (var p in params.build.dev.copy) {
+        gulp.src(p).pipe(gulp.dest(params.build.dev.copy[p]));
+    }
+});
+
+gulp.task('copy-prod:build', function () {
+    for (var p in params.build.prod.copy) {
+        gulp.src(p).pipe(gulp.dest(params.build.prod.copy[p]));
+    }
 });
 
 //-------------
 
 
 // Обработка изображений
+
+gulp.task('image-dev:build', function () {
+    gulp.src(params.src.img)
+        .pipe(gulp.dest(params.build.dev.img));
+});
 
 gulp.task('image-prod:build', function () {
     gulp.src(params.src.img)
@@ -133,29 +175,39 @@ gulp.task('image-prod:build', function () {
 //-------------
 
 
-/*
-gulp.task('watch', function(){
-    watch([path.watch.html], function(event, cb) {
-        gulp.start('html:build');
+gulp.task('watch', function() {
+    watch([params.watch.html], function(event, cb) {
+        gulp.start('html-dev:build');
     });
-    watch([path.watch.style], function(event, cb) {
-        gulp.start('style:build');
+    watch([params.watch.style], function(event, cb) {
+        gulp.start('styles-dev:build');
     });
-    watch([path.watch.js], function(event, cb) {
-        gulp.start('js:build');
+    watch([params.watch.js], function(event, cb) {
+        gulp.start('js-dev:build');
     });
-    watch([path.watch.img], function(event, cb) {
-        gulp.start('image:build');
-    });
-});*/
+});
 
 
-gulp.task('build-dev', [
-    'html-dev:build',
-    'js-dev:build',
-    'styles-dev:build',
-    //'image-dev:build'
-]);
+gulp.task('images', function() {
+    gulp.start('image-dev:build');
+    gulp.start('image-prod:build');
+});
 
 
-gulp.task('default', ['build']);
+gulp.task('dev', function() {
+    gulp.start('html-dev:build');
+    gulp.start('js-dev:build');
+    gulp.start('styles-dev:build');
+    gulp.start('copy-dev:build');
+});
+
+
+gulp.task('prod', ['dev'], function() {
+    gulp.start('html-prod:build');
+    gulp.start('js-prod:build');
+    gulp.start('styles-prod:build');
+    gulp.start('copy-prod:build');
+});
+
+
+gulp.task('default', ['dev', 'prod', 'images']);
