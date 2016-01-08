@@ -7,9 +7,6 @@
     "url": "https://github.com/nepster-web/frontend-box"
   },
   "dependencies": {
-    "run-sequence": "*",
-    "gulp-sync": "*",
-
     "gulp": "*",
     "gulp-less": "*",
     "gulp-watch": "*",

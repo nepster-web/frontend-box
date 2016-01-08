@@ -13,8 +13,6 @@ var gulp = require('gulp'),
     copy = require('gulp-copy'),
     concat = require('gulp-concat');
 
-var gulpsync = require('gulp-sync')(gulp);
-
 
 var params = {
     build: {
@@ -72,13 +70,13 @@ var params = {
 // Сборка html файлов
 
 gulp.task('html-dev:build', function () {
-    gulp.src(params.src.html)
+    return gulp.src(params.src.html)
         .pipe(preprocess({context: params.build.dev.settings}))
         .pipe(gulp.dest(params.build.dev.html));
 });
 
 gulp.task('html-prod:build', function () {
-    gulp.src(params.src.html)
+    return gulp.src(params.src.html)
         .pipe(preprocess({context: params.build.prod.settings}))
         .pipe(gulp.dest(params.build.prod.html));
 });
@@ -89,25 +87,27 @@ gulp.task('html-prod:build', function () {
 // Сборка less файлов
 
 gulp.task('styles-dev:build', function () {
-    gulp.src(params.src.style)
-        .pipe(less())
-        .pipe(autoprefixer({
-            browsers: ['last 55 versions'],
-            cascade: false
-        }))
-        .pipe(rename("styles.css"))
-        .pipe(gulp.dest(params.build.dev.css));
+    return gulp.src(params.src.style)
+            .pipe(less())
+            .pipe(autoprefixer({
+                browsers: ['last 55 versions'],
+                cascade: false
+            }))
+            .pipe(rename("styles.css"))
+            .pipe(gulp.dest(params.build.dev.css));
 });
 
-gulp.task('styles-prod:build', function () {
-    for (var p in params.build.prod.joinCss) {
-        for (var _p in params.build.prod.joinCss[p]) {
-            gulp.src(p)
-                .pipe(minifyCSS())
-                .pipe(concat(params.build.prod.joinCss[p][_p]))
-                .pipe(gulp.dest(_p));
+gulp.task('styles-prod:build', ['styles-dev:build'], function () {
+    return function() {
+        for (var p in params.build.prod.joinCss) {
+            for (var _p in params.build.prod.joinCss[p]) {
+                gulp.src(p)
+                    .pipe(minifyCSS())
+                    .pipe(concat(params.build.prod.joinCss[p][_p]))
+                    .pipe(gulp.dest(_p));
+            }
         }
-    }
+    }();
 });
 
 //-------------
@@ -116,19 +116,21 @@ gulp.task('styles-prod:build', function () {
 // Сборка js файлов
 
 gulp.task('js-dev:build', function () {
-    gulp.src(params.src.js)
+    return gulp.src(params.src.js)
         .pipe(gulp.dest(params.build.dev.js));
 });
 
 gulp.task('js-prod:build', function () {
-    for (var p in params.build.prod.joinJs) {
-        for (var _p in params.build.prod.joinJs[p]) {
-            gulp.src(p)
-                .pipe(uglify())
-                .pipe(concat(params.build.prod.joinJs[p][_p]))
-                .pipe(gulp.dest(_p));
+    return function() {
+        for (var p in params.build.prod.joinJs) {
+            for (var _p in params.build.prod.joinJs[p]) {
+                gulp.src(p)
+                    .pipe(uglify())
+                    .pipe(concat(params.build.prod.joinJs[p][_p]))
+                    .pipe(gulp.dest(_p));
+            }
         }
-    }
+    }();
 });
 
 //-------------
@@ -137,15 +139,19 @@ gulp.task('js-prod:build', function () {
 // Копирование файлов
 
 gulp.task('copy-dev:build', function () {
-    for (var p in params.build.dev.copy) {
-        gulp.src(p).pipe(gulp.dest(params.build.dev.copy[p]));
-    }
+    return function() {
+        for (var p in params.build.dev.copy) {
+            gulp.src(p).pipe(gulp.dest(params.build.dev.copy[p]));
+        }
+    }();
 });
 
 gulp.task('copy-prod:build', function () {
-    for (var p in params.build.prod.copy) {
-        gulp.src(p).pipe(gulp.dest(params.build.prod.copy[p]));
-    }
+    return function() {
+        for (var p in params.build.prod.copy) {
+            gulp.src(p).pipe(gulp.dest(params.build.prod.copy[p]));
+        }
+    }();
 });
 
 //-------------
@@ -154,12 +160,12 @@ gulp.task('copy-prod:build', function () {
 // Обработка изображений
 
 gulp.task('image-dev:build', function () {
-    gulp.src(params.src.img)
+    return gulp.src(params.src.img)
         .pipe(gulp.dest(params.build.dev.img));
 });
 
 gulp.task('image-prod:build', function () {
-    gulp.src(params.src.img)
+    return gulp.src(params.src.img)
         .pipe(image({
             pngquant: true,
             optipng: false,
@@ -212,17 +218,4 @@ gulp.task('prod', ['dev'], function() {
 });
 
 
-//gulp.task('default', ['dev', 'prod', 'images']);
-
-
-/*gulp.task('default', gulpsync.sync([
-    'dev',
-    'prod'
-]));*/
-
-var runSequence = require('run-sequence').use(gulp);
-
-
-gulp.task('default', function() {
-    runSequence('dev', 'prod');
-});
+gulp.task('default', ['dev', 'prod', 'images']);
