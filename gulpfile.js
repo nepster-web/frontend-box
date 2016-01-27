@@ -23,7 +23,7 @@ var params = {
             img: 'build/dev/img/',
             copy: {
                 'bower_components/normalize.css/normalize.css' : 'build/dev/css',
-                'bower_components/jquery/dist/jquery.js' : 'build/dev/js'
+                'bower_components/jquery/dist/jquery.js' : {'build/dev/js': 'jquery.js'}
             },
             settings: {
                 NODE_ENV: 'dev'
@@ -141,7 +141,15 @@ gulp.task('js-prod:build', function () {
 gulp.task('copy-dev:build', function () {
     return function() {
         for (var p in params.build.dev.copy) {
-            gulp.src(p).pipe(gulp.dest(params.build.dev.copy[p]));
+            if (typeof params.build.dev.copy[p] === 'object') {
+                for (var _p in params.build.dev.copy[p]) {
+                    gulp.src(p)
+                        .pipe(rename(params.build.dev.copy[p][_p]))
+                        .pipe(gulp.dest(_p));
+                }
+            } else {
+                gulp.src(p).pipe(gulp.dest(params.build.dev.copy[p]));
+            }
         }
     }();
 });
@@ -149,7 +157,15 @@ gulp.task('copy-dev:build', function () {
 gulp.task('copy-prod:build', function () {
     return function() {
         for (var p in params.build.prod.copy) {
-            gulp.src(p).pipe(gulp.dest(params.build.prod.copy[p]));
+            if (typeof params.build.prod.copy[p] === 'object') {
+                for (var _p in params.build.prod.copy[p]) {
+                    gulp.src(p)
+                        .pipe(rename(params.build.prod.copy[p][_p]))
+                        .pipe(gulp.dest(_p));
+                }
+            } else {
+                gulp.src(p).pipe(gulp.dest(params.build.prod.copy[p]));
+            }
         }
     }();
 });
