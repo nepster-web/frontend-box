@@ -43,7 +43,7 @@ var params = {
                 // preprocess settings
             },
             joinCss: {
-                'build/dev/css/*.css': {'build/prod/css/' : 'styles.min.css'}
+                'build/dev/css/{styles,normalize}.css': {'build/prod/css/' : 'styles.min.css'}
             },
             joinJs: {
                 'build/dev/js/app.js': {'build/prod/js/' : 'app.min.js'}
