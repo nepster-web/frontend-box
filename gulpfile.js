@@ -5,15 +5,19 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     preprocess = require('gulp-preprocess'),
     less = require('gulp-less'),
+    sass = require('gulp-sass'),
+    slim = require('gulp-slim'),
+    coffee = require('gulp-coffee'),
     env = require('gulp-env'),
     minifyCSS = require('gulp-minify-css'),
     rename = require('gulp-rename'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
     copy = require('gulp-copy'),
-    concat = require('gulp-concat');
+    concat = require('gulp-concat'),
+    pxtorem = require('gulp-pxtorem');
 
-
+/* TODO: вынести конфигурацию в отдельный файл */
 var params = {
     build: {
         dev: {
@@ -52,22 +56,34 @@ var params = {
     },
     src: {
         html: 'src/*.html',
+        slim: 'src/*.slim',
         js: 'src/js/app.js',
+        coffee: 'src/coffee/app-coffee.coffee',
         style: 'src/less/build.less',
+        //style: 'src/scss/build.scss',
         img: 'src/img/**/*.+(jpg|jpeg|gif|png|svg|ico)'
     },
     watch: {
         html: 'src/**/*.html',
+        slim: 'src/**/*.slim',
         js: 'src/js/**/*.js',
+        coffee: 'src/coffee/**/*.coffee',
         style: 'src/less/**/*.less',
+        //style: 'src/less/**/*.scss',
         img: 'src/img/**/*.+(jpg|jpeg|gif|png|svg|ico)'
     }
 };
 
-//-------------
+
 
 
 // Сборка html файлов
+
+gulp.task('slim-dev:build', function () {
+    return gulp.src(params.src.slim)
+        .pipe(slim())
+        .pipe(gulp.dest(params.build.dev.html));
+});
 
 gulp.task('html-dev:build', function () {
     return gulp.src(params.src.html)
@@ -85,16 +101,17 @@ gulp.task('html-prod:build', function () {
 
 
 // Сборка less файлов
-
 gulp.task('styles-dev:build', function () {
     return gulp.src(params.src.style)
-            .pipe(less())
-            .pipe(autoprefixer({
-                browsers: ['last 55 versions'],
-                cascade: false
-            }))
-            .pipe(rename("styles.css"))
-            .pipe(gulp.dest(params.build.dev.css));
+        //.pipe(less())
+        .pipe(sass.sync().on('error', sass.logError))
+        .pipe(autoprefixer({
+            browsers: ['last 55 versions'],
+            cascade: false
+        }))
+        .pipe(pxtorem({replace: false}))
+        .pipe(rename("styles.css"))
+        .pipe(gulp.dest(params.build.dev.css));
 });
 
 gulp.task('styles-prod:build', ['styles-dev:build'], function () {
@@ -114,6 +131,12 @@ gulp.task('styles-prod:build', ['styles-dev:build'], function () {
 
 
 // Сборка js файлов
+
+gulp.task('coffee-dev:build', function() {
+    return gulp.src(params.src.coffee)
+        .pipe(coffee({bare: true}))
+        .pipe(gulp.dest(params.build.dev.js));
+});
 
 gulp.task('js-dev:build', function () {
     return gulp.src(params.src.js)
@@ -219,8 +242,10 @@ gulp.task('images', function() {
 
 
 gulp.task('dev', function() {
+    //gulp.start('slim-dev:build');
     gulp.start('html-dev:build');
     gulp.start('js-dev:build');
+    gulp.start('coffee-dev:build');
     gulp.start('styles-dev:build');
     gulp.start('copy-dev:build');
 });

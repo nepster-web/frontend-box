@@ -1,9 +1,9 @@
 Заготовка для frontend приложения
 =================================
 
-Использование сборщика [Gulp](http://gulpjs.com).
-Использование препроцессора [LESS](http://lesscss.org).
-Использование менеджера пакетов [Bower](http://bower.io/).
+Для сборки используется [Gulp](http://gulpjs.com).
+Менеджера пакетов [Bower](http://bower.io/).
+Предпроцессор [Less](http://lesscss.org) и [Sass](http://sass-lang.com).
 
 
 Установка
@@ -12,6 +12,10 @@
 **npm install**
 
 **bower update**
+
+Для компиляции slim необходимо установить ruby gem:
+
+**sudo gem install slim**
 
 
 Запуск
@@ -37,9 +41,17 @@
 Описание плагинов
 -----------------
 
+[gulp-watch](https://www.npmjs.com/package/gulp-watch): наблюдение за изменениями файлов.
+
 [gulp-less](https://github.com/plus3network/gulp-less): для компиляции LESS кода в CSS
 
-[gulp-watch](https://www.npmjs.com/package/gulp-watch): наблюдение за изменениями файлов.
+[gulp-sass](https://github.com/dlmanning/gulp-sass): для компиляции SASS кода в CSS
+
+[gulp-slim](https://github.com/cognitom/gulp-slim): шаблонизатор HTML кода
+
+[gulp-coffee](https://github.com/contra/gulp-coffee): для компиляции Coffee Script кода в JavaScript
+
+[gulp-coffee](https://github.com/cuth/gulp-pxtorem): для компиляции px в rem
 
 [gulp-preprocess](https://www.npmjs.com/package/gulp-preprocess): замена неких переменных в виде комментариев на нужные нам данные.
 

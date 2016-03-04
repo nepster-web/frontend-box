@@ -1,6 +1,6 @@
 {
   "name": "frontend-box",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Заготовка для frontend приложения",
   "repository": {
     "type": "git",
@@ -9,6 +9,9 @@
   "dependencies": {
     "gulp": "*",
     "gulp-less": "*",
+    "gulp-sass": "*",
+    "gulp-slim": "*",
+    "gulp-coffee": "*",
     "gulp-watch": "*",
     "gulp-preprocess": "*",
     "gulp-copy": "*",
@@ -19,7 +22,8 @@
     "gulp-rename": "*",
     "gulp-ignore": "*",
     "gulp-minify-css": "*",
-    "gulp-concat": "*"
+    "gulp-concat": "*",
+    "gulp-pxtorem": "*"
   },
   "license": "MIT"
 }
