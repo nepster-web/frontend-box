@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+  outline: 0 none !important;
+}
+
+
+body {
+  font-size: @bodyFontSize;
+}
+
+
+.clear {
+  &:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+
+
+a {
+  color: #039;
+
+  &:hover {
+    color: #03F;
+  }
+}

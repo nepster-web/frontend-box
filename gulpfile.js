@@ -6,7 +6,6 @@ var gulp = require('gulp'),
     preprocess = require('gulp-preprocess'),
     less = require('gulp-less'),
     sass = require('gulp-sass'),
-    slim = require('gulp-slim'),
     coffee = require('gulp-coffee'),
     env = require('gulp-env'),
     minifyCSS = require('gulp-minify-css'),
@@ -56,7 +55,6 @@ var params = {
     },
     src: {
         html: 'src/*.html',
-        slim: 'src/*.slim',
         js: 'src/js/app.js',
         coffee: 'src/coffee/app-coffee.coffee',
         style: 'src/less/build.less',
@@ -65,11 +63,10 @@ var params = {
     },
     watch: {
         html: 'src/**/*.html',
-        slim: 'src/**/*.slim',
         js: 'src/js/**/*.js',
         coffee: 'src/coffee/**/*.coffee',
-        style: 'src/less/**/*.less',
-        //style: 'src/scss/**/*.scss',
+        //style: 'src/less/**/*.less',
+        style: 'src/scss/**/*.scss',
         img: 'src/img/**/*.+(jpg|jpeg|gif|png|svg|ico)'
     }
 };
@@ -78,12 +75,6 @@ var params = {
 
 
 // Сборка html файлов
-
-gulp.task('slim-dev:build', function () {
-    return gulp.src(params.src.slim)
-        .pipe(slim())
-        .pipe(gulp.dest(params.build.dev.html));
-});
 
 gulp.task('html-dev:build', function () {
     return gulp.src(params.src.html)
@@ -103,8 +94,8 @@ gulp.task('html-prod:build', function () {
 // Сборка less файлов
 gulp.task('styles-dev:build', function () {
     return gulp.src(params.src.style)
-        //.pipe(less())
-        .pipe(sass.sync().on('error', sass.logError))
+        .pipe(less())
+        //.pipe(sass.sync().on('error', sass.logError))
         .pipe(autoprefixer({
             browsers: ['last 55 versions'],
             cascade: false
@@ -242,7 +233,6 @@ gulp.task('images', function() {
 
 
 gulp.task('dev', function() {
-    //gulp.start('slim-dev:build');
     gulp.start('html-dev:build');
     gulp.start('js-dev:build');
     gulp.start('coffee-dev:build');

@@ -1,9 +1,9 @@
 Заготовка для frontend приложения
 =================================
 
-Для сборки используется [Gulp](http://gulpjs.com).
-Менеджера пакетов [Bower](http://bower.io/).
-Предпроцессор [Less](http://lesscss.org) и [Sass](http://sass-lang.com).
+* Для сборки используется [Gulp](http://gulpjs.com).
+* Менеджера пакетов [Bower](http://bower.io/).
+* Предпроцессор [Less](http://lesscss.org) и [Sass](http://sass-lang.com).
 
 
 Установка
@@ -12,10 +12,6 @@
 **npm install**
 
 **bower update**
-
-Для компиляции slim необходимо установить ruby gem:
-
-**sudo gem install slim**
 
 
 Запуск

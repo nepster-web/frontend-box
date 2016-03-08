@@ -10,7 +10,6 @@
     "gulp": "*",
     "gulp-less": "*",
     "gulp-sass": "*",
-    "gulp-slim": "*",
     "gulp-coffee": "*",
     "gulp-watch": "*",
     "gulp-preprocess": "*",

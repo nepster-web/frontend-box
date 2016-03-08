@@ -1,9 +1,33 @@
-/**
- * Main scss
- */
-@import "components/main.scss";
+// ----------------------
+// == Settings
+// ----------------------
+
+@import "_settings.scss";
 
 
-body {
-  font-size: 15px;
-}
+
+
+// ----------------------
+// == Base
+// ----------------------
+
+@import "_base.scss";
+
+
+
+
+// ----------------------
+// == Layouts
+// ----------------------
+@import "layouts/header.scss";
+@import "layouts/footer.scss";
+
+
+
+
+// ----------------------
+// == Modules
+// ----------------------
+@import "modules/buttons.scss";
+@import "modules/pagination.scss";
+
