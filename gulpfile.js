@@ -69,7 +69,7 @@ var params = {
         js: 'src/js/**/*.js',
         coffee: 'src/coffee/**/*.coffee',
         style: 'src/less/**/*.less',
-        //style: 'src/less/**/*.scss',
+        //style: 'src/scss/**/*.scss',
         img: 'src/img/**/*.+(jpg|jpeg|gif|png|svg|ico)'
     }
 };
