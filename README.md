@@ -47,7 +47,7 @@
 
 [gulp-coffee](https://github.com/contra/gulp-coffee): для компиляции Coffee Script кода в JavaScript
 
-[gulp-coffee](https://github.com/cuth/gulp-pxtorem): для компиляции px в rem
+[gulp-pxtorem](https://github.com/cuth/gulp-pxtorem): для компиляции px в rem
 
 [gulp-preprocess](https://www.npmjs.com/package/gulp-preprocess): замена неких переменных в виде комментариев на нужные нам данные.
 
